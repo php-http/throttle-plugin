@@ -1,4 +1,5 @@
-# throttle-plugin
+# Throttle Plugin
+
 PHP-HTTP plugin for throttling/rate limiting with the [symfony/rate-limiter](https://symfony.com/doc/current/rate_limiter.html)
 
 > Warning: Plugin currently utilizes usleep() and hence is blocking whole process while waiting
@@ -8,19 +9,18 @@ PHP-HTTP plugin for throttling/rate limiting with the [symfony/rate-limiter](htt
 Via [Composer](https://getcomposer.org/doc/00-intro.md)
 
 ```bash
-composer require phphttp-plugin/throttle
+composer require php-http/throttle-plugin
 ```
+
 ## Usage
 
 ```php
-new \Http\Client\Common\PluginClient($psr18Client, [
-    new \Http\Client\Common\Plugin\ThrottlePluginn(
-        (new \Symfony\Component\RateLimiter\RateLimiterFactory(
-            ['id' => 'foo', 'policy' => 'fixed_window', 'limit' => 2, 'interval' => '3 seconds'],
-            new \Symfony\Component\RateLimiter\Storage\InMemoryStorage(),
-        ))->create(),
-    ),
-]);
+new \Http\Client\Common\Plugin\ThrottlePluginn(
+    (new \Symfony\Component\RateLimiter\RateLimiterFactory(
+        ['id' => 'foo', 'policy' => 'fixed_window', 'limit' => 2, 'interval' => '3 seconds'],
+        new \Symfony\Component\RateLimiter\Storage\InMemoryStorage(),
+    ))->create(),
+);
 ```
 
 ## Licensing
