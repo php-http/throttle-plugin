@@ -25,7 +25,8 @@
         "nyholm/psr7": "^1.0",
         "php-http/mock-client": "^1.0",
         "ramsey/coding-standard": "^2.0",
-        "phpcsstandards/phpcsextra": "^1.0.0-alpha3@alpha",
+        "phpcsstandards/phpcsextra": "^1.0@alpha",
+        "phpcsstandards/phpcsutils": "^1.0@alpha",
         "symfony/phpunit-bridge": "^6.0"
     },
     "prefer-stable": true,
