@@ -15,7 +15,7 @@ composer require php-http/throttle-plugin
 ## Usage
 
 ```php
-new \Http\Client\Common\Plugin\ThrottlePluginn(
+new \Http\Client\Common\Plugin\ThrottlePlugin(
     (new \Symfony\Component\RateLimiter\RateLimiterFactory(
         ['id' => 'foo', 'policy' => 'fixed_window', 'limit' => 2, 'interval' => '3 seconds'],
         new \Symfony\Component\RateLimiter\Storage\InMemoryStorage(),
