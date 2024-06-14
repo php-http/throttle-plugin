@@ -1,17 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:noNamespaceSchemaLocation="./vendor/bin/.phpunit/phpunit/phpunit.xsd"
-         bootstrap="./vendor/autoload.php"
-         colors="true"
-         verbose="true">
-
+<phpunit
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/9.6/phpunit.xsd"
+    colors="true"
+    bootstrap="./vendor/autoload.php"
+>
     <php>
         <env name="SYMFONY_DEPRECATIONS_HELPER" value="max[self]=0" />
     </php>
 
+    <listeners>
+        <listener class="Symfony\Bridge\PhpUnit\SymfonyTestsListener"/>
+    </listeners>
+
     <testsuites>
         <testsuite name="unit-tests">
-            <directory>./src</directory>
+            <directory>tests</directory>
         </testsuite>
     </testsuites>
 

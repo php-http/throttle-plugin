@@ -6,9 +6,11 @@
     <arg value="sp"/>
 
     <file>./src</file>
+    <file>./tests</file>
 
     <rule ref="Ramsey">
         <exclude name="SlevomatCodingStandard.Namespaces.ReferenceUsedNamesOnly.ReferenceViaFallbackGlobalName"/>
+        <exclude name="SlevomatCodingStandard.TypeHints.DeclareStrictTypes.IncorrectWhitespaceBeforeDeclare"/>
     </rule>
 
 </ruleset>

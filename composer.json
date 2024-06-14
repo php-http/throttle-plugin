@@ -19,13 +19,15 @@
     "require": {
         "php": ">=7.4",
         "php-http/client-common": ">=1.3",
-        "symfony/rate-limiter": ">=5.2"
+        "symfony/rate-limiter": ">=5.4"
     },
     "require-dev": {
         "nyholm/psr7": "^1.0",
-        "php-http/mock-client": "*",
+        "php-http/mock-client": "^1.4",
         "ramsey/coding-standard": "^2.0",
-        "symfony/phpunit-bridge": ">=6.0"
+        "symfony/phpunit-bridge": ">=6.0",
+        "phpunit/phpunit": "^9.6",
+        "psr/http-factory": "^1.1"
     },
     "minimum-stability": "dev",
     "prefer-stable": true,
@@ -42,7 +44,8 @@
     "config": {
         "allow-plugins": {
             "dealerdirect/phpcodesniffer-composer-installer": true,
-            "ergebnis/composer-normalize": true
+            "ergebnis/composer-normalize": true,
+            "php-http/discovery": true
         }
     }
 }

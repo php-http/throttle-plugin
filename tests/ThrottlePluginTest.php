@@ -7,7 +7,7 @@ namespace Tests\Http\Client\Common\Plugin;
 use Http\Client\Common\Plugin\ThrottlePlugin;
 use Http\Client\Common\PluginClient;
 use Http\Mock\Client;
-use Nyholm\Psr7\Factory\HttplugFactory;
+use Nyholm\Psr7\Factory\Psr17Factory;
 use Nyholm\Psr7\Request;
 use PHPUnit\Framework\TestCase;
 use Symfony\Bridge\PhpUnit\ClockMock;
@@ -27,7 +27,7 @@ class ThrottlePluginTest extends TestCase
     protected function setUp(): void
     {
         ClockMock::register(RateLimit::class);
-        $this->mockClient = new Client(new HttplugFactory());
+        $this->mockClient = new Client(new Psr17Factory());
         $this->client = new PluginClient($this->mockClient, [
             new ThrottlePlugin(
                 (new RateLimiterFactory(
@@ -83,7 +83,7 @@ class ThrottlePluginTest extends TestCase
     {
         $this->client = new PluginClient($this->mockClient, [
             new ThrottlePlugin(
-                $rateLimit = (new RateLimiterFactory(
+                (new RateLimiterFactory(
                     ['id' => 'foo', 'policy' => 'fixed_window', 'limit' => 2, 'interval' => '3 seconds'],
                     new InMemoryStorage(),
                 ))->create(),
@@ -93,7 +93,9 @@ class ThrottlePluginTest extends TestCase
         ]);
 
         $this->expectException(MaxWaitDurationExceededException::class);
-        $this->expectExceptionMessage('The rate limiter wait time ("3" seconds) is longer than the provided maximum time ("1" seconds).');
+        $this->expectExceptionMessage(
+            'The rate limiter wait time ("3" seconds) is longer than the provided maximum time ("1" seconds).',
+        );
 
         $time = time();
         $this->client->sendRequest(new Request('GET', ''));

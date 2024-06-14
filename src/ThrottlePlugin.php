@@ -32,7 +32,7 @@ final class ThrottlePlugin implements Plugin
     }
 
     /**
-     * @throws MaxWaitDurationExceededException if $maxTime is set and the process needs to wait longer than its value (in seconds)
+     * @throws MaxWaitDurationExceededException if $maxTime is set and the process needs to wait longer than its value
      * @throws ReserveNotSupportedException if this limiter implementation doesn't support reserving tokens
      * @throws InvalidArgumentException if $tokens is larger than the maximum burst size
      */
