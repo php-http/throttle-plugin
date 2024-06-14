@@ -11,6 +11,7 @@ use Nyholm\Psr7\Factory\HttplugFactory;
 use Nyholm\Psr7\Request;
 use PHPUnit\Framework\TestCase;
 use Symfony\Bridge\PhpUnit\ClockMock;
+use Symfony\Component\RateLimiter\Exception\MaxWaitDurationExceededException;
 use Symfony\Component\RateLimiter\RateLimit;
 use Symfony\Component\RateLimiter\RateLimiterFactory;
 use Symfony\Component\RateLimiter\Storage\InMemoryStorage;
@@ -47,6 +48,53 @@ class ThrottlePluginTest extends TestCase
 
     public function testThrottle(): void
     {
+        $time = time();
+        $this->client->sendRequest(new Request('GET', ''));
+        $this->client->sendRequest(new Request('GET', ''));
+        $this->client->sendRequest(new Request('GET', ''));
+        $this->assertEqualsWithDelta($time, ($timeAfterThrottle = time()) - 3, 1);
+
+        $this->client->sendRequest(new Request('GET', ''));
+        $this->assertEqualsWithDelta($timeAfterThrottle, time(), 1);
+    }
+
+    public function testTokens(): void
+    {
+        $this->client = new PluginClient($this->mockClient, [
+            new ThrottlePlugin(
+                (new RateLimiterFactory(
+                    ['id' => 'foo', 'policy' => 'fixed_window', 'limit' => 2, 'interval' => '3 seconds'],
+                    new InMemoryStorage(),
+                ))->create(),
+                2,
+            ),
+        ]);
+
+        $time = time();
+        $this->client->sendRequest(new Request('GET', ''));
+        $this->client->sendRequest(new Request('GET', ''));
+        $this->assertEqualsWithDelta($time, ($timeAfterThrottle = time()) - 3, 1);
+
+        $this->client->sendRequest(new Request('GET', ''));
+        $this->assertEqualsWithDelta($timeAfterThrottle, time(), 1);
+    }
+
+    public function testMaxTime(): void
+    {
+        $this->client = new PluginClient($this->mockClient, [
+            new ThrottlePlugin(
+                $rateLimit = (new RateLimiterFactory(
+                    ['id' => 'foo', 'policy' => 'fixed_window', 'limit' => 2, 'interval' => '3 seconds'],
+                    new InMemoryStorage(),
+                ))->create(),
+                1,
+                1,
+            ),
+        ]);
+
+        $this->expectException(MaxWaitDurationExceededException::class);
+        $this->expectExceptionMessage('The rate limiter wait time ("3" seconds) is longer than the provided maximum time ("1" seconds).');
+        
         $time = time();
         $this->client->sendRequest(new Request('GET', ''));
         $this->client->sendRequest(new Request('GET', ''));
