@@ -94,7 +94,7 @@ class ThrottlePluginTest extends TestCase
 
         $this->expectException(MaxWaitDurationExceededException::class);
         $this->expectExceptionMessage('The rate limiter wait time ("3" seconds) is longer than the provided maximum time ("1" seconds).');
-        
+
         $time = time();
         $this->client->sendRequest(new Request('GET', ''));
         $this->client->sendRequest(new Request('GET', ''));
